@@ -3,29 +3,21 @@ const navMenu = document.getElementById("nav-menu"),
   navToggle = document.getElementById("nav-toggle"),
   navClose = document.getElementById("nav-close")
 
-/*===== MENU SHOW =====*/
-/* Validate if constant exists */
 if (navToggle) {
   navToggle.addEventListener("click", () => {
     navMenu.classList.add("show-menu")
   })
 }
-
-/*===== MENU HIDDEN =====*/
-/* Validate if constant exists */
 if (navClose) {
   navClose.addEventListener("click", () => {
     navMenu.classList.remove("show-menu")
   })
 }
 
-/*==================== REMOVE MENU MOBILE ====================*/
 const navLinks = document.querySelectorAll(".nav__link")
-
 function linkAction() {
   navMenu.classList.remove("show-menu")
 }
-
 navLinks.forEach((n) => n.addEventListener("click", linkAction))
 
 /*==================== ACCORDION SKILLS ====================*/
@@ -34,7 +26,6 @@ const skillsContent = document.getElementsByClassName("skills__content"),
 
 function toggleSkills() {
   const itemClass = this.parentNode.className
-
   for (let i = 0; i < skillsContent.length; i++) {
     skillsContent[i].className = "skills__content skills__close"
   }
@@ -42,7 +33,6 @@ function toggleSkills() {
     this.parentNode.className = "skills__content skills__open"
   }
 }
-
 skillsHeader.forEach((el) => {
   el.addEventListener("click", toggleSkills)
 })
@@ -54,12 +44,10 @@ const tabs = document.querySelectorAll("[data-target]"),
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
     const target = document.querySelector(tab.dataset.target)
-
     tabContents.forEach((tabContent) => {
       tabContent.classList.remove("qualification__active")
     })
     target.classList.add("qualification__active")
-
     tabs.forEach((tab) => {
       tab.classList.remove("qualification__active")
     })
@@ -90,12 +78,11 @@ modalCloses.forEach((modalClose) => {
   })
 })
 
-/*==================== PORTFOLIO SWIPER  ====================*/
+/*==================== PORTFOLIO & TESTIMONIAL SWIPER ====================*/
 let swiperPortfolio
 let swiperTestimonial
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Enhanced Portfolio Swiper with better responsiveness and effects
   swiperPortfolio = new Swiper(".portfolio__container", {
     cssMode: true,
     loop: true,
@@ -109,22 +96,10 @@ document.addEventListener("DOMContentLoaded", () => {
       dynamicBullets: true,
     },
     breakpoints: {
-      320: {
-        slidesPerView: 1,
-        spaceBetween: 20,
-      },
-      568: {
-        slidesPerView: 1,
-        spaceBetween: 30,
-      },
-      768: {
-        slidesPerView: 2,
-        spaceBetween: 30,
-      },
-      1024: {
-        slidesPerView: 2,
-        spaceBetween: 40,
-      },
+      320: { slidesPerView: 1, spaceBetween: 20 },
+      568: { slidesPerView: 1, spaceBetween: 30 },
+      768: { slidesPerView: 2, spaceBetween: 30 },
+      1024: { slidesPerView: 2, spaceBetween: 40 },
     },
     autoplay: {
       delay: 5000,
@@ -135,30 +110,26 @@ document.addEventListener("DOMContentLoaded", () => {
     effect: 'slide',
     grabCursor: true,
     on: {
-      init: function() {
-        // Add visible class to initial slides
+      init() {
         const activeSlides = document.querySelectorAll('.swiper-slide-active, .swiper-slide-next');
         activeSlides.forEach(slide => {
-          slide.querySelector('.portfolio__content').classList.add('visible');
+          slide.querySelector('.portfolio__content')?.classList.add('visible');
         });
       },
-      slideChangeTransitionStart: function() {
-        // Hide all portfolio content during transition
+      slideChangeTransitionStart() {
         document.querySelectorAll('.portfolio__content').forEach(content => {
           content.classList.remove('visible');
         });
       },
-      slideChangeTransitionEnd: function() {
-        // Show active slides after transition
+      slideChangeTransitionEnd() {
         const activeSlides = document.querySelectorAll('.swiper-slide-active, .swiper-slide-next');
         activeSlides.forEach(slide => {
-          slide.querySelector('.portfolio__content').classList.add('visible');
+          slide.querySelector('.portfolio__content')?.classList.add('visible');
         });
       }
     }
-  })
+  });
 
-  /*==================== TESTIMONIAL ====================*/
   swiperTestimonial = new Swiper(".testimonial__container", {
     loop: true,
     grabCursor: true,
@@ -169,14 +140,45 @@ document.addEventListener("DOMContentLoaded", () => {
       dynamicBullets: true,
     },
     breakpoints: {
-      568: {
-        slidesPerView: 2,
-      },
+      568: { slidesPerView: 2 },
     },
     autoplay: {
       delay: 5000,
       disableOnInteraction: false,
     },
+  });
+
+  /*==================== ENHANCED PORTFOLIO INTERACTIONS ====================*/
+  document.querySelectorAll(".portfolio__content").forEach((item) => {
+    item.addEventListener("mouseenter", function () {
+      this.querySelector(".portfolio__img").style.transform = "scale(1.05)"
+      this.querySelector(".portfolio__title").style.color = "var(--first-color)"
+      this.style.boxShadow = "0 10px 30px rgba(0, 0, 0, 0.15)"
+    })
+    item.addEventListener("mouseleave", function () {
+      this.querySelector(".portfolio__img").style.transform = ""
+      this.querySelector(".portfolio__title").style.color = ""
+      this.style.boxShadow = ""
+    })
+    item.addEventListener("mousedown", function () {
+      this.style.transform = "scale(0.98)"
+    })
+    item.addEventListener("mouseup", function () {
+      this.style.transform = ""
+    })
+  })
+
+  document.querySelectorAll(".section").forEach((section) => {
+    section.classList.add("animate__animated")
+    const rect = section.getBoundingClientRect()
+    if (rect.top < window.innerHeight) {
+      section.classList.add("visible")
+      if (section.id === "portfolio") {
+        document.querySelectorAll(".portfolio__content").forEach((item, index) => {
+          setTimeout(() => item.classList.add("visible"), 200 * index)
+        })
+      }
+    }
   })
 })
 
@@ -185,13 +187,11 @@ const observerOptions = {
   threshold: 0.1,
   rootMargin: "0px 0px -50px 0px",
 }
-
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
       entry.target.classList.add("visible")
-      
-      // Animate skill bars when skills section becomes visible
+
       if (entry.target.id === "skills") {
         document.querySelectorAll(".skills__percentage").forEach((bar) => {
           bar.style.width = "0"
@@ -200,13 +200,12 @@ const observer = new IntersectionObserver((entries) => {
           }, 300)
         })
       }
-      
-      // Animate portfolio items when portfolio section becomes visible
+
       if (entry.target.id === "portfolio") {
         document.querySelectorAll(".portfolio__content").forEach((item, index) => {
           setTimeout(() => {
             item.classList.add("visible")
-          }, 200 * index) // Staggered animation
+          }, 200 * index)
         })
       }
     }
@@ -219,16 +218,13 @@ document.querySelectorAll(".section").forEach((section) => {
 
 /*==================== SCROLL SECTIONS ACTIVE LINK ====================*/
 const sections = document.querySelectorAll("section[id]")
-
 function scrollActive() {
   const scrollY = window.pageYOffset
-
   sections.forEach((current) => {
     const sectionHeight = current.offsetHeight,
       sectionTop = current.offsetTop - 50,
       sectionId = current.getAttribute("id"),
       sectionsClass = document.querySelector(".nav__menu a[href*=" + sectionId + "]")
-
     if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
       sectionsClass.classList.add("active-link")
     } else {
@@ -258,7 +254,6 @@ window.addEventListener("scroll", scrollUp)
 const themeButton = document.getElementById("theme-button")
 const darkTheme = "dark-theme"
 const iconTheme = "uil-sun"
-
 const selectedTheme = localStorage.getItem("selected-theme")
 const selectedIcon = localStorage.getItem("selected-icon")
 
@@ -275,53 +270,4 @@ themeButton.addEventListener("click", () => {
   themeButton.classList.toggle(iconTheme)
   localStorage.setItem("selected-theme", getCurrentTheme())
   localStorage.setItem("selected-icon", getCurrentIcon())
-})
-
-/*==================== ENHANCED PORTFOLIO INTERACTIONS ====================*/
-document.addEventListener("DOMContentLoaded", () => {
-  // Enhanced hover effects for portfolio items
-  document.querySelectorAll(".portfolio__content").forEach((item) => {
-    item.addEventListener("mouseenter", function() {
-      this.querySelector(".portfolio__img").style.transform = "scale(1.05)"
-      this.querySelector(".portfolio__title").style.color = "var(--first-color)"
-      this.style.boxShadow = "0 10px 30px rgba(0, 0, 0, 0.15)"
-    })
-
-    item.addEventListener("mouseleave", function() {
-      this.querySelector(".portfolio__img").style.transform = ""
-      this.querySelector(".portfolio__title").style.color = ""
-      this.style.boxShadow = ""
-    })
-    
-    // Add click animation
-    item.addEventListener("mousedown", function() {
-      this.style.transform = "scale(0.98)"
-    })
-    
-    item.addEventListener("mouseup", function() {
-      this.style.transform = ""
-    })
-  })
-  
-  // Add animation classes to sections
-  document.querySelectorAll(".section").forEach((section) => {
-    section.classList.add("animate__animated")
-  })
-  
-  // Animate sections that are initially visible
-  document.querySelectorAll(".section").forEach((section) => {
-    const rect = section.getBoundingClientRect()
-    if (rect.top < window.innerHeight) {
-      section.classList.add("visible")
-      
-      // If portfolio section is initially visible, animate its items
-      if (section.id === "portfolio") {
-        document.querySelectorAll(".portfolio__content").forEach((item, index) => {
-          setTimeout(() => {
-            item.classList.add("visible")
-          }, 200 * index)
-        })
-      }
-    }
-  })
 })
