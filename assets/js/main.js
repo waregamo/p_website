@@ -271,3 +271,49 @@ themeButton.addEventListener("click", () => {
   localStorage.setItem("selected-theme", getCurrentTheme())
   localStorage.setItem("selected-icon", getCurrentIcon())
 })
+
+// CONTACT FORM SUBMISSION HANDLER
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("contact-form");
+  const messageContainer = document.getElementById("form-message");
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (response.ok) {
+        messageContainer.textContent = "Thanks for your message! I'll get back to you soon.";
+        messageContainer.classList.remove("error");
+        messageContainer.classList.add("success");
+        messageContainer.style.display = "block";
+        form.reset();
+      } else {
+        const data = await response.json();
+        if (data.errors) {
+          messageContainer.textContent = data.errors.map(error => error.message).join(", ");
+        } else {
+          messageContainer.textContent = "Oops! Something went wrong.";
+        }
+        messageContainer.classList.remove("success");
+        messageContainer.classList.add("error");
+        messageContainer.style.display = "block";
+      }
+    } catch (error) {
+      messageContainer.textContent = "Oops! Something went wrong.";
+      messageContainer.classList.remove("success");
+      messageContainer.classList.add("error");
+      messageContainer.style.display = "block";
+    }
+  });
+});
+
