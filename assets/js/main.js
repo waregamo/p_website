@@ -313,7 +313,21 @@ document.addEventListener("DOMContentLoaded", function () {
       messageContainer.classList.remove("success");
       messageContainer.classList.add("error");
       messageContainer.style.display = "block";
+      form.reset();
     }
+
+    // Fade out message after 5 seconds
+    setTimeout(() => {
+      messageContainer.classList.add("hide");
+      setTimeout(() => {
+        messageContainer.style.display = "none";
+        messageContainer.classList.remove("success", "error", "hide");
+      }, 500); // Allow time for fade-out transition
+    }, 5000);
   });
 });
+
+
+
+
 
