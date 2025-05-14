@@ -1,15 +1,6 @@
-# Kibutu Jr's Portfolio Website
-
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Deployed-brightgreen)](https://kibutujr.github.io/Portfolio-KibutuJr/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green.svg)
+# warega's Portfolio Website
 
 A professional portfolio website showcasing projects, skills, and experience as a software developer. Built with pure HTML, CSS, and JavaScript, featuring responsive design, animations, and interactive elements.
-
-![Portfolio Screenshot](./screenshot.png) <!-- Add a screenshot -->
-
-## Live Demo
-**[https://kibutujr.github.io/Portfolio-KibutuJr/](https://kibutujr.github.io/Portfolio-KibutuJr/)**
 
 ## Features
 - **Hero Section**: Animated introduction with social media links
@@ -44,8 +35,8 @@ CSS animations adapted from Animate.css
 Form handling powered by Formspree
 
 Contact:
-GitHub: [@KibutuJr](https://github.com/KibutuJr/)
+GitHub: (https://github.com/waregamo/)
 
-LinkedIn: [Fredrick Kibutu](https://www.linkedin.com/in/fred-kibutu/)
+LinkedIn: [warega moses](https://www.linkedin.com/in/warega moses/)
 
-Email: kibutujr@gmail.com
+Email: waregamoses20@gmail.com
